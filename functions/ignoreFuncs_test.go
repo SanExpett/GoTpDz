@@ -23,11 +23,12 @@ func TestIgnoreNFields(t *testing.T) {
 	IgnoreNFields(&lines, 3)
 	expetcted = []string{"", "", ""}
 	assert.Equal(t, lines, expetcted)
+}
 
-	lines = []string{"line one aaaa", "second line", "b s a"}
-	IgnoreNFields(&lines, -2)
-	expetcted = []string{"", "", ""}
-	assert.Equal(t, lines, expetcted)
+func TestIgnoreNFieldsError(t *testing.T) {
+	lines := []string{"line one aaaa", "second line", "b s a"}
+	err := IgnoreNFields(&lines, -2)
+	assert.NotNil(t, err)
 }
 
 func TestIgnoreNSymbols(t *testing.T) {
@@ -40,9 +41,10 @@ func TestIgnoreNSymbols(t *testing.T) {
 	IgnoreNSymbols(&lines, 20)
 	expetcted = []string{"", "", ""}
 	assert.Equal(t, lines, expetcted)
+}
 
-	lines = []string{"line one aaaa", "second line", "b s a"}
-	IgnoreNSymbols(&lines, -2)
-	expetcted = []string{"", "", ""}
-	assert.Equal(t, lines, expetcted)
+func TestIgnoreNSymbolsError(t *testing.T) {
+	lines := []string{"line one aaaa", "second line", "b s a"}
+	err := IgnoreNSymbols(&lines, -2)
+	assert.NotNil(t, err)
 }

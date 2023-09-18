@@ -9,18 +9,21 @@ import (
 
 // из слайса всех строк и слайса булов подходящих
 // вернуть слайс подходящих
-func GetResult(lines []string, suitableLines []bool) ([]string, error) {
-	if len(lines) != len(suitableLines) {
-		return nil, errors.New("slices must have same len")
+func GetResult(lines *[]string, suitableLines []bool) error {
+	if len(*lines) != len(suitableLines) {
+		return errors.New("slices must have same len")
 	}
 	
 	var result []string
 	for i, val := range suitableLines {
 		if val {
-			result = append(result, lines[i])
+			result = append(result, (*lines)[i])
 		}
 	}
-	return result, nil 
+	
+	*lines = result
+
+	return nil 
 }
 
 // UniqLines возвращает слайс булов, где true обозначает уникальные строки в данном слайсе строк.

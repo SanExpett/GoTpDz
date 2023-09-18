@@ -6,19 +6,28 @@ import (
 	"os"
 )
 
-func FromInputToSlice(inputFileName string) []string {
+func FromInputToSlice(inputFileName string) ([]string, error) {
 	if inputFileName != "" {
-		return fromFileToSlice(inputFileName)
+		result, err := fromFileToSlice(inputFileName)
+		if err != nil {
+			return nil, err
+		} else {
+			return result, nil
+		}
 	} else {
-		return fromStdinToSlice()
+		result, err := FromInputToSlice(inputFileName)
+		if err != nil {
+			return nil, err
+		} else {
+			return result, nil
+		}
 	}
 }
 
-func fromFileToSlice(inputFileName string) []string {
+func fromFileToSlice(inputFileName string) ([]string, error) {
 	inputFile, err := os.Open(inputFileName)
 	if err != nil {
-		fmt.Println(err)
-		return nil
+		return nil, err
 	}
 
 	defer inputFile.Close()
@@ -32,13 +41,13 @@ func fromFileToSlice(inputFileName string) []string {
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println(err)
-		return nil
+		return nil, err
 	}
 
-	return lines
+	return lines, nil
 }
 
-func fromStdinToSlice() []string {
+func fromStdinToSlice() ([]string, error) {
 	lines := []string{}
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -47,9 +56,8 @@ func fromStdinToSlice() []string {
 	}
 
 	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
-		return nil
+		return nil, err
 	}
 
-	return lines
+	return lines, nil
 }

@@ -22,7 +22,7 @@ func TestUniqLines(t *testing.T) {
 	lines := EXAMPLE
 	result := UniqLines(lines)
 	expected := []bool{true, false, false, true, true, false, true, true, false}
-	assert.Equal(t, result, expected)
+	assert.Equal(t, expected, result)
 }
 
 func TestCountOfLines(t *testing.T) {
@@ -47,27 +47,35 @@ func TestCountOfLines(t *testing.T) {
 			resultLines = append(resultLines, linesWithCounts[i])
 		}
 	}
-	assert.Equal(t, resultLines, expectedLines)
+	assert.Equal(t, expectedLines, resultLines)
 }
 
 func TestRepeatingLines(t *testing.T) {
 	lines := EXAMPLE
 	result := RepeatingLines(lines)
 	expected := []bool{true, false, false, false, true, false, false, true, false}
-	assert.Equal(t, result, expected)
+	assert.Equal(t, expected, result)
 }
 
 func TestNonRepeatingLines(t *testing.T) {
 	lines := EXAMPLE
 	result := NonRepeatingLines(lines)
 	expected := []bool{false, false, false, true, false, false, true, false, false}
-	assert.Equal(t, result, expected)
+	assert.Equal(t, expected, result )
 }
 
-func TestGetResult(t *testing.T) {
+func TestGetResultRignt(t *testing.T) {
 	lines := EXAMPLE
-	result := NonRepeatingLines(lines)
-	expected := []bool{false, false, false, true, false, false, true, false, false}
-	assert.Equal(t, result, expected)
+	suitableLines := []bool{false, false, false, true, false, false, true, false, false}
+	GetResult(&lines, suitableLines)
+	expected := []string{"", "Thanks."}
+	assert.Equal(t, lines, expected)
 }
 
+
+func TestGetResultError(t *testing.T) {
+	lines := EXAMPLE
+	suitableLines := []bool{false, false, false}
+	err := GetResult(&lines, suitableLines)
+	assert.NotNil(t, err)
+}

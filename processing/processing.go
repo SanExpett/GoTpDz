@@ -1,6 +1,7 @@
 package processing
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 
@@ -17,34 +18,30 @@ func initFlags(cFlag, dFlag, uFlag, iFlag *bool, fFlag, sFlag *int) {
 	flag.BoolVar(iFlag, "i", false, "Ignore register")
 }
 
-// func getResult(lines []string, suitableLines []bool) []string {
-// 	var result []string
-// 	for i, val := range suitableLines {
-// 		if val {
-// 			result = append(result, lines[i])
-// 		}
-// 	}
-// 	return result 
-// }
-
 //uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]
-func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[]string) {
+func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[]string) error {
 	linesCopy := make([]string, len(*lines))
 	copy(linesCopy, *lines)
 
 	suitableLines := make([]bool, len(linesCopy))
-	// БЛОК 1
+	// флаги, которые говорят игнорировать регистр/ n слов / n символов (ломаем ими linesCopy)
 	if iFlag {
 		functions.IgnoreRegister(&linesCopy) 
 	} 
-	if fFlag > 0 {
-		functions.IgnoreNFields(&linesCopy, fFlag)
+	if fFlag != 0 {
+		errF := functions.IgnoreNFields(&linesCopy, fFlag)
+		if errF != nil {
+			return errF
+		}
 	}
-	if sFlag > 0 {
-		functions.IgnoreNSymbols(&linesCopy, sFlag)
+	if sFlag != 0 {
+		errS := functions.IgnoreNSymbols(&linesCopy, sFlag)
+		if errS != nil {
+			return errS
+		}
 	}
 
-	// Блок 2
+	// флаги, которые делают выорку из строк, которые уже были изменены ignore флагами
 	if (cFlag != dFlag) != uFlag { // костыльный xor
 		if cFlag {
 			suitableLines = functions.CountOfLines(linesCopy, lines)
@@ -59,12 +56,19 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 		suitableLines = functions.UniqLines(linesCopy)
 	} else {
 		fmt.Println("Формат команды: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
+		return errors.New("Формат команды: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]") 
 	}
 
-	*lines, _ = functions.GetResult(*lines, suitableLines)
+	err := functions.GetResult(lines, suitableLines)
+	if err!= nil {
+		return err
+	}
+	return nil
 }
 
-func ParseCommandLine() {
+// вызывает initFlags, парсит строчку, считывает имена файлов (или пуст. стр., если их нет) вызывает FromInputToSlice, чтобы записать введенные строки в lines
+// вызывает executeCommands, внутри которого меняется lines, вызывает FromSliceToOutput чтобы вывести lines в нужный вывод
+func ParseCommandLine() error {
 	var cFlag, dFlag, uFlag, iFlag bool
 	var fFlag, sFlag int
 	initFlags(&cFlag, &dFlag, &uFlag, &iFlag, &fFlag, &sFlag)
@@ -73,7 +77,15 @@ func ParseCommandLine() {
 	inputFileName := flag.Arg(0)
 	outputFileName := flag.Arg(1)
 	
-	lines := inout.FromInputToSlice(inputFileName)
-	executeCommands(cFlag, dFlag, uFlag, iFlag, fFlag, sFlag, &lines)
+	lines, inputErr := inout.FromInputToSlice(inputFileName)
+	if inputErr != nil {
+		return inputErr
+	}
+
+	execErr := executeCommands(cFlag, dFlag, uFlag, iFlag, fFlag, sFlag, &lines)
+	if execErr != nil {
+		return execErr
+	}
 	inout.FromSliceToOutput(lines, outputFileName)
+	return nil
 }

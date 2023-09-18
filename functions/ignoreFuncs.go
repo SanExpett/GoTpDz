@@ -3,6 +3,7 @@
 package functions
 
 import (
+	"errors"
 	"strings"
 )
 
@@ -12,23 +13,33 @@ func IgnoreRegister(lines *[]string) {
 	}
 }
 
-func IgnoreNFields(lines *[]string, n int) {
+func IgnoreNFields(lines *[]string, n int) error {
+	if n < 0 {
+		return errors.New("n must be >= 0")
+	}
+	
 	for i := range *lines {
 		words := strings.Split((*lines)[i], " ")
-		if n < 0 || n > len(words) {
+		if n > len(words) {
 			(*lines)[i] = ""
 		} else {
 			(*lines)[i] = strings.Join(words[n:], " ")
 		}
 	}
+	return nil
 }
 
-func IgnoreNSymbols(lines *[]string, n int) {
+func IgnoreNSymbols(lines *[]string, n int) error {
+	if n < 0 {
+		return errors.New("n must be >= 0")
+	}
+
 	for i := range *lines {
-		if n < 0 || n > len( (*lines)[i] ) {
+		if n > len( (*lines)[i] ) {
 			(*lines)[i] = ""
 		} else {
 			(*lines)[i] = (*lines)[i][n:]
 		}
 	}
+	return nil
 }

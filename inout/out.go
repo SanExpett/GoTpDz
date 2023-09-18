@@ -8,7 +8,7 @@ import (
 
 func FromSliceToOutput(lines []string, outputFileName string) {
 	if outputFileName != "" {
-		fromSliceToFile(lines, outputFileName)
+		fromSliceToStdout(lines)
 	} else {
 		fromSliceToStdout(lines)
 	}
