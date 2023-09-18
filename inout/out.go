@@ -6,22 +6,26 @@ import (
 	"strings"
 )
 
-func FromSliceToOutput(lines []string, outputFileName string) {
+func FromSliceToOutput(lines []string, outputFileName string) error {
 	if outputFileName != "" {
 		fromSliceToStdout(lines)
 	} else {
-		fromSliceToStdout(lines)
+		err := fromSliceToFile(lines, outputFileName)
+		if err != nil {
+			return err
+		} 
 	}
+	return nil
 }
 
-func fromSliceToFile(lines []string, outputFileName string) {
+func fromSliceToFile(lines []string, outputFileName string) error {
 	joinedLines := strings.Join(lines, "\n")
 	err := ioutil.WriteFile(outputFileName, []byte(joinedLines), 0644)
 
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
+	return nil
 }
 
 func fromSliceToStdout(lines []string) {

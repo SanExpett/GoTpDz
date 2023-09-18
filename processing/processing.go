@@ -9,6 +9,7 @@ import (
 	"github.com/SanExpett/TpGoDz/inout"
 )
 
+// инициализирует флаги
 func initFlags(cFlag, dFlag, uFlag, iFlag *bool, fFlag, sFlag *int) {
 	flag.BoolVar(cFlag, "c", false, "Count before each string")
 	flag.BoolVar(dFlag, "d", false, "Only reapeting")
@@ -86,6 +87,10 @@ func ParseCommandLine() error {
 	if execErr != nil {
 		return execErr
 	}
-	inout.FromSliceToOutput(lines, outputFileName)
+
+	outputErr := inout.FromSliceToOutput(lines, outputFileName)
+	if (outputErr != nil) {
+		return outputErr
+	}
 	return nil
 }
