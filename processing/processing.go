@@ -30,15 +30,15 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 		functions.IgnoreRegister(&linesCopy) 
 	} 
 	if fFlag != 0 {
-		errF := functions.IgnoreNFields(&linesCopy, fFlag)
-		if errF != nil {
-			return errF
+		err := functions.IgnoreNFields(&linesCopy, fFlag)
+		if err != nil {
+			return err
 		}
 	}
 	if sFlag != 0 {
-		errS := functions.IgnoreNSymbols(&linesCopy, sFlag)
-		if errS != nil {
-			return errS
+		err := functions.IgnoreNSymbols(&linesCopy, sFlag)
+		if err != nil {
+			return err
 		}
 	}
 
@@ -78,19 +78,19 @@ func ParseCommandLine() error {
 	inputFileName := flag.Arg(0)
 	outputFileName := flag.Arg(1)
 	
-	lines, inputErr := inout.FromInputToSlice(inputFileName)
-	if inputErr != nil {
-		return inputErr
+	lines, err := inout.FromInputToSlice(inputFileName)
+	if err != nil {
+		return err
 	}
 
-	execErr := executeCommands(cFlag, dFlag, uFlag, iFlag, fFlag, sFlag, &lines)
-	if execErr != nil {
-		return execErr
+	err = executeCommands(cFlag, dFlag, uFlag, iFlag, fFlag, sFlag, &lines)
+	if err != nil {
+		return err
 	}
 
-	outputErr := inout.FromSliceToOutput(lines, outputFileName)
-	if (outputErr != nil) {
-		return outputErr
+	err = inout.FromSliceToOutput(lines, outputFileName)
+	if (err != nil) {
+		return err
 	}
 	return nil
 }

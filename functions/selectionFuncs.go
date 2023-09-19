@@ -56,14 +56,14 @@ func CountOfLines(lines []string, linesWithCounts *[]string) []bool { // -c
 	currLineIdx := 0
 	suitableLines[0] = true
 	for i := 1; i < len(lines); i++ {
-		if lines[i] != lines[currLineIdx] {
-			(*linesWithCounts)[currLineIdx] = strconv.Itoa(count) + " " + (*linesWithCounts)[currLineIdx]
-			suitableLines[i] = true
-			currLineIdx = i
-			count = 1
-		} else {
+		if lines[i] == lines[currLineIdx] { // spetial situation
 			count++
+			continue
 		}
+		(*linesWithCounts)[currLineIdx] = strconv.Itoa(count) + " " + (*linesWithCounts)[currLineIdx]
+		suitableLines[i] = true
+		currLineIdx = i
+		count = 1
 	}
 	(*linesWithCounts)[currLineIdx] = strconv.Itoa(count) + " " + (*linesWithCounts)[currLineIdx]
 	return suitableLines

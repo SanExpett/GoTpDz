@@ -11,17 +11,14 @@ func FromInputToSlice(inputFileName string) ([]string, error) {
 		result, err := fromFileToSlice(inputFileName)
 		if err != nil {
 			return nil, err
-		} else {
-			return result, nil
-		}
-	} else {
-		result, err := FromInputToSlice(inputFileName)
-		if err != nil {
-			return nil, err
-		} else {
-			return result, nil
-		}
-	}
+		} 
+		return result, nil
+	} 
+	result, err := FromInputToSlice(inputFileName)
+	if err != nil {
+		return nil, err
+	} 
+	return result, nil
 }
 
 func fromFileToSlice(inputFileName string) ([]string, error) {
