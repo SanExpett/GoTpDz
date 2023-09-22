@@ -5,8 +5,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/SanExpett/TpGoDz/functions"
-	"github.com/SanExpett/TpGoDz/inout"
+	"github.com/SanExpett/GoDz1P1/functions"
+	"github.com/SanExpett/GoDz1P1/inout"
 )
 
 // инициализирует флаги
@@ -27,8 +27,8 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 	suitableLines := make([]bool, len(linesCopy))
 	// флаги, которые говорят игнорировать регистр/ n слов / n символов (ломаем ими linesCopy)
 	if iFlag {
-		functions.IgnoreRegister(&linesCopy) 
-	} 
+		functions.IgnoreRegister(&linesCopy)
+	}
 	if fFlag != 0 {
 		err := functions.IgnoreNFields(&linesCopy, fFlag)
 		if err != nil {
@@ -46,7 +46,7 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 	if (cFlag != dFlag) != uFlag { // костыльный xor
 		if cFlag {
 			suitableLines = functions.CountOfLines(linesCopy, lines)
-		}	
+		}
 		if dFlag {
 			suitableLines = functions.RepeatingLines(linesCopy)
 		}
@@ -57,11 +57,11 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 		suitableLines = functions.UniqLines(linesCopy)
 	} else {
 		fmt.Println("Формат команды: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
-		return errors.New("Формат команды: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]") 
+		return errors.New("Формат команды: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
 	}
 
 	err := functions.GetResult(lines, suitableLines)
-	if err!= nil {
+	if err != nil {
 		return err
 	}
 	return nil
@@ -77,7 +77,7 @@ func ParseCommandLine() error {
 
 	inputFileName := flag.Arg(0)
 	outputFileName := flag.Arg(1)
-	
+
 	lines, err := inout.FromInputToSlice(inputFileName)
 	if err != nil {
 		return err
@@ -89,7 +89,7 @@ func ParseCommandLine() error {
 	}
 
 	err = inout.FromSliceToOutput(lines, outputFileName)
-	if (err != nil) {
+	if err != nil {
 		return err
 	}
 	return nil

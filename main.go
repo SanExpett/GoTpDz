@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/SanExpett/TpGoDz/processing"
+	"github.com/SanExpett/GoDz1P1/processing"
 )
 
 func main() {

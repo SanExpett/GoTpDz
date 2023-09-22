@@ -1,4 +1,4 @@
-module github.com/SanExpett/TpGoDz
+module github.com/SanExpett/GoDz1P1
 
 go 1.18
 

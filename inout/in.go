@@ -14,7 +14,7 @@ func FromInputToSlice(inputFileName string) ([]string, error) {
 		} 
 		return result, nil
 	} 
-	result, err := FromInputToSlice(inputFileName)
+	result, err := fromStdinToSlice()
 	if err != nil {
 		return nil, err
 	} 

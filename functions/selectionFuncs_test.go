@@ -69,7 +69,7 @@ func TestGetResultRignt(t *testing.T) {
 	suitableLines := []bool{false, false, false, true, false, false, true, false, false}
 	GetResult(&lines, suitableLines)
 	expected := []string{"", "Thanks."}
-	assert.Equal(t, lines, expected)
+	assert.Equal(t, expected, lines)
 }
 
 
