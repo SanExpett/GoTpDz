@@ -72,6 +72,7 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 func ParseCommandLine() error {
 	var cFlag, dFlag, uFlag, iFlag bool
 	var fFlag, sFlag int
+	
 	initFlags(&cFlag, &dFlag, &uFlag, &iFlag, &fFlag, &sFlag)
 	flag.Parse()
 

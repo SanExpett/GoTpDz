@@ -8,7 +8,7 @@ import (
 )
 
 // из слайса всех строк и слайса булов подходящих
-// вернуть слайс подходящих
+// вернуть слайс подходящих.
 func GetResult(lines *[]string, suitableLines []bool) error {
 	if len(*lines) != len(suitableLines) {
 		return errors.New("slices must have same len")
@@ -44,8 +44,10 @@ func UniqLines(lines []string) []bool { // дефолтное поведение
 	return suitableLines
 }
 
-// CountOfLines возвращает слайс булов, где true обозначает строки, для которых указано количество в соответствующем элементе общего слайса строк.
-// lines - строки после применения ignoreFuncs, linesWithCounts - указатель на ориг строки, к ним прилепим кол-во
+// CountOfLines возвращает слайс булов, где true обозначает строки, для 
+// которых указано количество в соответствующем элементе общего слайса строк.
+// lines - строки после применения ignoreFuncs, 
+// linesWithCounts - указатель на ориг строки, к ним прилепим кол-во.
 func CountOfLines(lines []string, linesWithCounts *[]string) []bool { // -c
 	if len(lines) == 0 {
 		return []bool{}
@@ -98,15 +100,18 @@ func NonRepeatingLines(lines []string) []bool { // -u
 	}
 
 	suitableLines := make([]bool, len(lines))
+
 	if len(lines) > 1 {
 		if lines[0] != lines[1] {
 			suitableLines[0] = true
 		}
+
 		for i := 1; i < len(lines)-1; i++ {
 			if lines[i] != lines[i-1] && lines[i] != lines[i+1] {
 				suitableLines[i] = true
 			}
 		}
+
 		if lines[len(lines)-1] != lines[len(lines)-2] {
 			suitableLines[len(lines)-1] = true
 		}

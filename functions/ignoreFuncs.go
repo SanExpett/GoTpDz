@@ -41,5 +41,6 @@ func IgnoreNSymbols(lines *[]string, n int) error {
 			(*lines)[i] = (*lines)[i][n:]
 		}
 	}
+	
 	return nil
 }

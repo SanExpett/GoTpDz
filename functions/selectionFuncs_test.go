@@ -1,8 +1,9 @@
-package functions
+package functions_test
 
 import (
 	"testing"
 
+	"github.com/SanExpett/GoDz1P1/functions"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,7 +21,7 @@ var EXAMPLE = []string{
 
 func TestUniqLines(t *testing.T) {
 	lines := EXAMPLE
-	result := UniqLines(lines)
+	result := functions.UniqLines(lines)
 	expected := []bool{true, false, false, true, true, false, true, true, false}
 	assert.Equal(t, expected, result)
 }
@@ -29,7 +30,7 @@ func TestCountOfLines(t *testing.T) {
 	// тестим то, что функция правильно возвращает слайс булов с подходящими строками
 	lines := EXAMPLE // предполагается, что это строки которые возможно были поломаны ignore флагами
 	linesWithCounts := EXAMPLE
-	result := CountOfLines(lines, &linesWithCounts)
+	result := functions.CountOfLines(lines, &linesWithCounts)
 	expectedBools := []bool{true, false, false, true, true, false, true, true, false}
 	assert.Equal(t, result, expectedBools)
 	
@@ -41,33 +42,36 @@ func TestCountOfLines(t *testing.T) {
 		"1 Thanks.",
 		"2 I love music of Kartik.",
 	}
+
 	var resultLines []string
+
 	for i, val := range expectedBools {
 		if val {
 			resultLines = append(resultLines, linesWithCounts[i])
 		}
 	}
+	
 	assert.Equal(t, expectedLines, resultLines)
 }
 
 func TestRepeatingLines(t *testing.T) {
 	lines := EXAMPLE
-	result := RepeatingLines(lines)
+	result := functions.RepeatingLines(lines)
 	expected := []bool{true, false, false, false, true, false, false, true, false}
 	assert.Equal(t, expected, result)
 }
 
 func TestNonRepeatingLines(t *testing.T) {
 	lines := EXAMPLE
-	result := NonRepeatingLines(lines)
+	result := functions.NonRepeatingLines(lines)
 	expected := []bool{false, false, false, true, false, false, true, false, false}
-	assert.Equal(t, expected, result )
+	assert.Equal(t, expected, result)
 }
 
 func TestGetResultRignt(t *testing.T) {
 	lines := EXAMPLE
 	suitableLines := []bool{false, false, false, true, false, false, true, false, false}
-	GetResult(&lines, suitableLines)
+	functions.GetResult(&lines, suitableLines)
 	expected := []string{"", "Thanks."}
 	assert.Equal(t, expected, lines)
 }
@@ -76,6 +80,6 @@ func TestGetResultRignt(t *testing.T) {
 func TestGetResultError(t *testing.T) {
 	lines := EXAMPLE
 	suitableLines := []bool{false, false, false}
-	err := GetResult(&lines, suitableLines)
+	err := functions.GetResult(&lines, suitableLines)
 	assert.NotNil(t, err)
 }

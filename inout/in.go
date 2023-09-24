@@ -14,15 +14,19 @@ func FromInputToSlice(inputFileName string) ([]string, error) {
 		} 
 		return result, nil
 	} 
+
 	result, err := fromStdinToSlice()
+
 	if err != nil {
 		return nil, err
 	} 
+
 	return result, nil
 }
 
 func fromFileToSlice(inputFileName string) ([]string, error) {
 	inputFile, err := os.Open(inputFileName)
+	
 	if err != nil {
 		return nil, err
 	}
@@ -38,6 +42,7 @@ func fromFileToSlice(inputFileName string) ([]string, error) {
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println(err)
+
 		return nil, err
 	}
 
@@ -47,6 +52,7 @@ func fromFileToSlice(inputFileName string) ([]string, error) {
 func fromStdinToSlice() ([]string, error) {
 	lines := []string{}
 	scanner := bufio.NewScanner(os.Stdin)
+
 	for scanner.Scan() {
 		line := scanner.Text()
 		lines = append(lines, line)
