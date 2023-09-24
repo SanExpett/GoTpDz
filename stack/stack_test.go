@@ -7,7 +7,7 @@ import (
 )
 
 func TestStack(t *testing.T) { // тестим методы стека (успешные сценарии)
-	st := Create() 
+	st := Create()
 
 	st.Push("first")
 	assert.Equal(t, 1, st.Len())
@@ -21,7 +21,7 @@ func TestStack(t *testing.T) { // тестим методы стека (успе
 }
 
 func TestStackErrors(t *testing.T) {
-	st := Create() 
+	st := Create()
 
 	_, err := st.Top() // нельзя топнуть из пустого стека
 	assert.NotNil(t, err)

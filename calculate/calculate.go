@@ -2,10 +2,11 @@ package calculate
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"regexp"
 	"strconv"
-	"fmt"
+	"strings"
 )
 
 func Run() error {
@@ -13,6 +14,8 @@ func Run() error {
 	if err != nil {
 		return err
 	}
+
+	expression = fixExpression(expression)
 
 	result, err := calculate(expression)
 	if err != nil {
@@ -23,7 +26,27 @@ func Run() error {
 	return nil
 }
 
-func parceCommandLine() (string, error){ // вытаскиваем из строки выражение
+// учитывает ситуацию с отрицательными числами, если перед символом минус ничего нет(начало строки) или (, то это минус от отрицательного числа,
+// функция заменяет такие - на 0-
+func fixExpression(str string) string {
+	var result []string
+
+	for i := 0; i < len(str); i++ {
+		if str[i] == '-' {
+			if i == 0 || str[i-1] == '(' {
+				result = append(result, "0-")
+			} else {
+				result = append(result, string(str[i]))
+			}
+		} else {
+			result = append(result, string(str[i]))
+		}
+	}
+
+	return strings.Join(result, "")
+}
+
+func parceCommandLine() (string, error) { // вытаскиваем из строки выражение
 	if len(os.Args) > 2 {
 		return "", errors.New("There must be only one expression")
 	}
@@ -67,6 +90,9 @@ func calcForTwoNums(num1 string, num2 string, operator string) (string, error) {
 	case operator == "*":
 		return strconv.Itoa(intNum1 * intNum2), nil
 	case operator == "/":
+		if num2 == "0" {
+			return "0", errors.New("Zero division")
+		}
 		return strconv.Itoa(intNum1 / intNum2), nil
 	default:
 		return "", nil
