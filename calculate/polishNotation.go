@@ -36,8 +36,13 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 				if err != nil {
 					return nil, err
 				}
+
 				result = append(result, top)
-				stack.Pop()
+
+				_, err := stack.Pop()
+				if err != nil {
+					return nil, err
+				} 
 			}
 
 			// Если не удалось найти открывающую скобку, возвращаем ошибку
@@ -45,6 +50,7 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 			if err != nil {
 				return nil, err
 			}
+
 			if stack.Len() == 0 || top != "(" {
 				return nil, errors.New("unbalanced parentheses")
 			}
@@ -58,11 +64,14 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 			// Если текущий токен - оператор
 			if _, isOperator := operators[token]; isOperator {
 				// Пока оператор на вершине стека имеет >= приоритет, переносим его в результат
-				for top, err := stack.Top(); stack.Len() > 0 && top != "(" && operators[token] <= operators[top]; top, err = stack.Top() {
+				for top, err := stack.Top(); stack.Len() > 0 && top != "(" && operators[token] <= operators[top]; {
+					top, err = stack.Top()
 					if err != nil {
 						return nil, err
 					}
+
 					result = append(result, top)
+
 					_, err = stack.Pop()
 					if err != nil {
 						return nil, err
@@ -102,7 +111,8 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 	return result, nil
 }
 
-func getResFromPolish(tokens []string) (string, error) { // из выражения в польской записи (слайслом строк) получаем результат выражения строкой
+// из выражения в польской записи (слайслом строк) получаем результат выражения строкой.
+func getResFromPolish(tokens []string) (string, error) { 
 	stack := stack.Create()
 
 	for _, token := range tokens {
@@ -114,6 +124,7 @@ func getResFromPolish(tokens []string) (string, error) { // из выражен�
 			if err != nil {
 				return "", err
 			}
+
 			num1, err := stack.Pop()
 			if err != nil {
 				return "", err
@@ -123,6 +134,7 @@ func getResFromPolish(tokens []string) (string, error) { // из выражен�
 			if err != nil {
 				return "", err
 			}
+			
 			stack.Push(res)
 		}
 	}

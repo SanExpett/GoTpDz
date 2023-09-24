@@ -9,6 +9,7 @@ import (
 func main() {
 	err := calculate.Run()
 	if err != nil {
-		fmt.Printf("Произошла ошибка: %v", err)
+		errorMsg := fmt.Sprintf("Произошла ошибка: %v", err)
+		fmt.Println(errorMsg)
 	}
 }

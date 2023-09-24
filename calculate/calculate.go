@@ -23,11 +23,12 @@ func Run() error {
 	}
 
 	fmt.Println(result)
+
 	return nil
 }
 
-// учитывает ситуацию с отрицательными числами, если перед символом минус ничего нет(начало строки) или (, то это минус от отрицательного числа,
-// функция заменяет такие - на 0-
+// учитывает ситуацию с отрицательными числами, если перед символом минус ничего нет(начало строки)
+// или (, то это минус от отрицательного числа, функция заменяет такие - на 0-.
 func fixExpression(str string) string {
 	var result []string
 
@@ -56,6 +57,7 @@ func parceCommandLine() (string, error) { // вытаскиваем из стр�
 	}
 
 	expression := os.Args[1]
+
 	return expression, nil
 }
 
@@ -78,7 +80,8 @@ func calculate(expression string) (string, error) { // передаем стро
 	return result, nil
 }
 
-func calcForTwoNums(num1 string, num2 string, operator string) (string, error) { // передаем стрки с двумя числами и операцией, получаем резульат ее применения на числах
+// передаем стрки с двумя числами и операцией, получаем резульат ее применения на числах.
+func calcForTwoNums(num1 string, num2 string, operator string) (string, error) { 
 	intNum1, _ := strconv.Atoi(num1)
 	intNum2, _ := strconv.Atoi(num2)
 
@@ -114,12 +117,14 @@ func tokenize(expression string) ([]string, error) { // из строки с в�
 		case char == '+' || char == '-' || char == '*' || char == '/' || char == '(' || char == ')':
 			if token != "" {
 				tokens = append(tokens, token)
+
 				token = ""
 			}
 			tokens = append(tokens, string(char))
 		case char == ' ':
 			if token != "" {
 				tokens = append(tokens, token)
+
 				token = ""
 			}
 		default:
@@ -135,6 +140,6 @@ func tokenize(expression string) ([]string, error) { // из строки с в�
 }
 
 func correctExpression(expr string) bool { // проверяем что выражение состоит из цифр, скобок и пробелов
-	reg, _ := regexp.Compile(`^[0-9()+\-*\/ ]+$`)
+	reg := regexp.MustCompile(`^[0-9()+\-*\/ ]+$`)
 	return reg.MatchString(expr)
 }

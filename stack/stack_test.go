@@ -7,25 +7,25 @@ import (
 )
 
 func TestStack(t *testing.T) { // тестим методы стека (успешные сценарии)
-	st := Create()
+	stack := Create()
 
-	st.Push("first")
-	assert.Equal(t, 1, st.Len())
+	stack.Push("first")
+	assert.Equal(t, 1, stack.Len())
 
-	top, _ := st.Top()
+	top, _ := stack.Top()
 	assert.Equal(t, "first", top)
 
-	poped, _ := st.Pop()
+	poped, _ := stack.Pop()
 	assert.Equal(t, "first", poped)
-	assert.Equal(t, 0, st.Len())
+	assert.Equal(t, 0, stack.Len())
 }
 
 func TestStackErrors(t *testing.T) {
-	st := Create()
+	stack := Create()
 
-	_, err := st.Top() // нельзя топнуть из пустого стека
+	_, err := stack.Top() // нельзя топнуть из пустого стека
 	assert.NotNil(t, err)
 
-	_, err = st.Pop() // нельзя попнуть из пустого стека
+	_, err = stack.Pop() // нельзя попнуть из пустого стека
 	assert.NotNil(t, err)
 }
