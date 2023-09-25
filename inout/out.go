@@ -7,7 +7,7 @@ import (
 )
 
 func FromSliceToOutput(lines []string, outputFileName string) error {
-	if outputFileName != "" {
+	if outputFileName == "" {
 		fromSliceToStdout(lines)
 	} else {
 		err := fromSliceToFile(lines, outputFileName)

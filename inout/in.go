@@ -10,6 +10,7 @@ func FromInputToSlice(inputFileName string) ([]string, error) {
 	if inputFileName != "" {
 		result, err := fromFileToSlice(inputFileName)
 		if err != nil {
+			fmt.Println("tut")
 			return nil, err
 		} 
 		return result, nil
@@ -18,6 +19,7 @@ func FromInputToSlice(inputFileName string) ([]string, error) {
 	result, err := fromStdinToSlice()
 
 	if err != nil {
+		fmt.Println("tut")
 		return nil, err
 	} 
 
