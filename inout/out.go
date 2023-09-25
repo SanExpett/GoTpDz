@@ -15,6 +15,7 @@ func FromSliceToOutput(lines []string, outputFileName string) error {
 			return err
 		} 
 	}
+	
 	return nil
 }
 
@@ -25,6 +26,7 @@ func fromSliceToFile(lines []string, outputFileName string) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 

@@ -8,6 +8,8 @@ import (
 )
 
 func TestIgnoreRegister(t *testing.T) {
+	t.Parallel()
+
 	lines := []string{"low", "UPP", "aaaBBB"}
 	functions.IgnoreRegister(&lines)
 	expetcted := []string{"low", "upp", "aaabbb"}
@@ -15,6 +17,8 @@ func TestIgnoreRegister(t *testing.T) {
 }
 
 func TestIgnoreNFields(t *testing.T) {
+	t.Parallel()
+
 	lines := []string{"line one aaaa", "second line", "b s a"}
 	functions.IgnoreNFields(&lines, 1)
 	expetcted := []string{"one aaaa", "line", "s a"}
@@ -27,12 +31,16 @@ func TestIgnoreNFields(t *testing.T) {
 }
 
 func TestIgnoreNFieldsError(t *testing.T) {
+	t.Parallel()
+
 	lines := []string{"line one aaaa", "second line", "b s a"}
 	err := functions.IgnoreNFields(&lines, -2)
 	assert.NotNil(t, err)
 }
 
 func TestIgnoreNSymbols(t *testing.T) {
+	t.Parallel()
+
 	lines := []string{"line one aaaa", "second line", "b s a"}
 	functions.IgnoreNSymbols(&lines, 3)
 	expetcted := []string{"e one aaaa", "ond line", " a"}
@@ -45,6 +53,8 @@ func TestIgnoreNSymbols(t *testing.T) {
 }
 
 func TestIgnoreNSymbolsError(t *testing.T) {
+	t.Parallel()
+	
 	lines := []string{"line one aaaa", "second line", "b s a"}
 	err := functions.IgnoreNSymbols(&lines, -2)
 	assert.NotNil(t, err)

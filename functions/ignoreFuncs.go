@@ -26,6 +26,7 @@ func IgnoreNFields(lines *[]string, n int) error {
 			(*lines)[i] = strings.Join(words[n:], " ")
 		}
 	}
+	
 	return nil
 }
 

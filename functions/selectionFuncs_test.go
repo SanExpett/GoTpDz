@@ -20,6 +20,8 @@ var EXAMPLE = []string{
 }
 
 func TestUniqLines(t *testing.T) {
+	t.Parallel()
+	
 	lines := EXAMPLE
 	result := functions.UniqLines(lines)
 	expected := []bool{true, false, false, true, true, false, true, true, false}
@@ -27,6 +29,8 @@ func TestUniqLines(t *testing.T) {
 }
 
 func TestCountOfLines(t *testing.T) {
+	t.Parallel()
+
 	// тестим то, что функция правильно возвращает слайс булов с подходящими строками
 	lines := EXAMPLE // предполагается, что это строки которые возможно были поломаны ignore флагами
 
@@ -57,7 +61,9 @@ func TestCountOfLines(t *testing.T) {
 	assert.Equal(t, expectedLines, resultLines)
 }
 
-func TestRepeatingLines(t *testing.T) { //err
+func TestRepeatingLines(t *testing.T) { 
+	t.Parallel()
+
 	lines := EXAMPLE
 	result := functions.RepeatingLines(lines)
 	expected := []bool{true, false, false, false, true, false, false, true, false}
@@ -65,6 +71,8 @@ func TestRepeatingLines(t *testing.T) { //err
 }
 
 func TestNonRepeatingLines(t *testing.T) {
+	t.Parallel()
+
 	lines := EXAMPLE
 	result := functions.NonRepeatingLines(lines)
 	expected := []bool{false, false, false, true, false, false, true, false, false}
@@ -72,6 +80,8 @@ func TestNonRepeatingLines(t *testing.T) {
 }
 
 func TestGetResultRignt(t *testing.T) {
+	t.Parallel()
+
 	lines := EXAMPLE
 	suitableLines := []bool{false, false, false, true, false, false, true, false, false}
 	functions.GetResult(&lines, suitableLines)
@@ -80,6 +90,8 @@ func TestGetResultRignt(t *testing.T) {
 }
 
 func TestGetResultError(t *testing.T) {
+	t.Parallel()
+
 	lines := EXAMPLE
 	suitableLines := []bool{false, false, false}
 	err := functions.GetResult(&lines, suitableLines)

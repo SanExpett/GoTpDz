@@ -15,6 +15,7 @@ func GetResult(lines *[]string, suitableLines []bool) error {
 	}
 	
 	var result []string
+
 	for i, val := range suitableLines {
 		if val {
 			result = append(result, (*lines)[i])
@@ -35,12 +36,14 @@ func UniqLines(lines []string) []bool { // дефолтное поведение
 	suitableLines := make([]bool, len(lines))
 	currLine := lines[0]
 	suitableLines[0] = true
+
 	for i := 1; i < len(lines); i++ {
 		if lines[i] != currLine {
 			suitableLines[i] = true
 			currLine = lines[i]
 		}
 	}
+
 	return suitableLines
 }
 
@@ -57,17 +60,21 @@ func CountOfLines(lines []string, linesWithCounts *[]string) []bool { // -c
 	count := 1
 	currLineIdx := 0
 	suitableLines[0] = true
+
 	for i := 1; i < len(lines); i++ {
-		if lines[i] == lines[currLineIdx] { // spetial situation
+		if lines[i] == lines[currLineIdx] { 
 			count++
+
 			continue
 		}
+
 		(*linesWithCounts)[currLineIdx] = strconv.Itoa(count) + " " + (*linesWithCounts)[currLineIdx]
 		suitableLines[i] = true
 		currLineIdx = i
 		count = 1
 	}
 	(*linesWithCounts)[currLineIdx] = strconv.Itoa(count) + " " + (*linesWithCounts)[currLineIdx]
+
 	return suitableLines
 }
 
@@ -78,8 +85,9 @@ func RepeatingLines(lines []string) []bool { // -d
 	}
 
 	suitableLines := make([]bool, len(lines))
-	var currLine string
 	currIdx := 0
+
+	var currLine string
 
 	for i := 0; i < len(lines); i++ {
 		if lines[i] != currLine {
@@ -118,5 +126,6 @@ func NonRepeatingLines(lines []string) []bool { // -u
 	} else if len(lines) == 1 {
 		suitableLines[0] = true
 	}
+	
 	return suitableLines
 }

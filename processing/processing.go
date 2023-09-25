@@ -9,8 +9,8 @@ import (
 	"github.com/SanExpett/GoDz1P1/inout"
 )
 
-// инициализирует флаги
-func initFlags(cFlag, dFlag, uFlag, iFlag *bool, fFlag, sFlag *int) {
+// инициализирует флаги.
+func initFlags(cFlag, dFlag, uFlag, iFlag *bool, fFlag, sFlag *int, ) {
 	flag.BoolVar(cFlag, "c", false, "Count before each string")
 	flag.BoolVar(dFlag, "d", false, "Only reapeting")
 	flag.BoolVar(uFlag, "u", false, "Only non-reapeting")
@@ -19,7 +19,7 @@ func initFlags(cFlag, dFlag, uFlag, iFlag *bool, fFlag, sFlag *int) {
 	flag.BoolVar(iFlag, "i", false, "Ignore register")
 }
 
-//uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]
+//uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]].
 func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[]string) error {
 	linesCopy := make([]string, len(*lines))
 	copy(linesCopy, *lines)
@@ -29,12 +29,14 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 	if iFlag {
 		functions.IgnoreRegister(&linesCopy)
 	}
+
 	if fFlag != 0 {
 		err := functions.IgnoreNFields(&linesCopy, fFlag)
 		if err != nil {
 			return err
 		}
 	}
+
 	if sFlag != 0 {
 		err := functions.IgnoreNSymbols(&linesCopy, sFlag)
 		if err != nil {
@@ -42,14 +44,16 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 		}
 	}
 
-	// флаги, которые делают выорку из строк, которые уже были изменены ignore флагами
+	// флаги, которые делают выорку из строк, которые уже были изменены ignore флагами.
 	if (cFlag != dFlag) != uFlag { // костыльный xor
 		if cFlag {
 			suitableLines = functions.CountOfLines(linesCopy, lines)
 		}
+
 		if dFlag {
 			suitableLines = functions.RepeatingLines(linesCopy)
 		}
+
 		if uFlag {
 			suitableLines = functions.NonRepeatingLines(linesCopy)
 		}
@@ -64,13 +68,17 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
-// вызывает initFlags, парсит строчку, считывает имена файлов (или пуст. стр., если их нет) вызывает FromInputToSlice, чтобы записать введенные строки в lines
-// вызывает executeCommands, внутри которого меняется lines, вызывает FromSliceToOutput чтобы вывести lines в нужный вывод
+// вызывает initFlags, парсит строчку, считывает имена файлов (или пуст. стр., если их нет)
+// вызывает FromInputToSlice, чтобы записать введенные строки в lines
+// вызывает executeCommands, внутри которого меняется lines, 
+// вызывает FromSliceToOutput чтобы вывести lines в нужный вывод.
 func ParseCommandLine() error {
 	var cFlag, dFlag, uFlag, iFlag bool
+	
 	var fFlag, sFlag int
 	
 	initFlags(&cFlag, &dFlag, &uFlag, &iFlag, &fFlag, &sFlag)
@@ -93,5 +101,6 @@ func ParseCommandLine() error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }

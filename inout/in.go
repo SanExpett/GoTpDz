@@ -2,7 +2,6 @@ package inout
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 )
 
@@ -10,16 +9,15 @@ func FromInputToSlice(inputFileName string) ([]string, error) {
 	if inputFileName != "" {
 		result, err := fromFileToSlice(inputFileName)
 		if err != nil {
-			fmt.Println("tut")
 			return nil, err
 		} 
+		
 		return result, nil
 	} 
 
 	result, err := fromStdinToSlice()
 
 	if err != nil {
-		fmt.Println("tut")
 		return nil, err
 	} 
 
@@ -36,6 +34,7 @@ func fromFileToSlice(inputFileName string) ([]string, error) {
 	defer inputFile.Close()
 
 	lines := []string{}
+
 	scanner := bufio.NewScanner(inputFile)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -43,8 +42,6 @@ func fromFileToSlice(inputFileName string) ([]string, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
-
 		return nil, err
 	}
 
