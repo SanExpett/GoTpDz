@@ -2,14 +2,16 @@ package calculate
 
 import (
 	"errors"
-	"github.com/SanExpett/TpGoDz/stack"
 	"strconv"
+	
+	"github.com/SanExpett/TpGoDz/stack"
 )
 
 func isNum(str string) bool { // проверяем что в строке число
 	if _, err := strconv.Atoi(str); err != nil {
 		return false
 	}
+
 	return true
 }
 
@@ -26,7 +28,7 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 		"/": 2,
 	}
 
-	for _, token := range tokens {
+	for i, token := range tokens {
 		switch token {
 		case "(":
 			stack.Push(token)
@@ -39,7 +41,7 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 
 				result = append(result, top)
 
-				_, err := stack.Pop()
+				_, err = stack.Pop()
 				if err != nil {
 					return nil, err
 				} 
@@ -55,17 +57,24 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 				return nil, errors.New("unbalanced parentheses")
 			}
 
-			// Удаляем открывающую скобку из стека
+			// Удаляем открывающую скобку из стека ?????????????
 			_, err = stack.Pop()
 			if err != nil {
 				return nil, err
 			}
 		default:
 			// Если текущий токен - оператор
-			if _, isOperator := operators[token]; isOperator {
+			_, isOperator := operators[token]; 
+			operatorPriority := operators[token]
+
+			if token == "-" && (i == 0 || !isNum(tokens[i - 1]) && tokens[i - 1] != ")") { // если унарный минус
+				result = append(result, "0")
+				operatorPriority = 3
+			}
+
+			if isOperator { // любой другой оператор
 				// Пока оператор на вершине стека имеет >= приоритет, переносим его в результат
-				for top, err := stack.Top(); stack.Len() > 0 && top != "(" && operators[token] <= operators[top]; {
-					top, err = stack.Top()
+				for top, err := stack.Top(); stack.Len() > 0 && top != "(" && operatorPriority <= operators[top]; top, err = stack.Top() {
 					if err != nil {
 						return nil, err
 					}
@@ -97,11 +106,13 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 		if err != nil {
 			return nil, err
 		}
+
 		if top == "(" {
 			return nil, errors.New("unbalanced parentheses")
 		}
 
 		result = append(result, top)
+
 		_, err = stack.Pop()
 		if err != nil {
 			return nil, err
@@ -119,6 +130,7 @@ func getResFromPolish(tokens []string) (string, error) {
 		if isNum(token) {
 			stack.Push(token)
 		}
+
 		if !isNum(token) {
 			num2, err := stack.Pop()
 			if err != nil {

@@ -7,6 +7,8 @@ import (
 )
 
 func TestToPolishNotation(t *testing.T) {
+	t.Parallel()
+
 	input := []string{"(", "1", "+", "23", ")", "*", "33"}
 	expected := []string{"1", "23", "+", "33", "*"}
 	result, _ := ToPolishNotation(input)
@@ -19,6 +21,8 @@ func TestToPolishNotation(t *testing.T) {
 }
 
 func TestToPolishNotationErrors(t *testing.T) {
+	t.Parallel()
+
 	input := []string{")", "1", "+", "23", ")", "*", "33"}
 	_, err := ToPolishNotation(input)
 	assert.NotNil(t, err)
@@ -28,7 +32,9 @@ func TestToPolishNotationErrors(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func TestCulculate(t *testing.T) {
+func TestCalculate(t *testing.T) {
+	t.Parallel()
+
 	input := "(1+2)-3"
 	actual, _ := calculate(input)
 	assert.Equal(t, "0", actual)
@@ -40,9 +46,23 @@ func TestCulculate(t *testing.T) {
 	input = "(14+16-3)/(3*3)"
 	actual, _ = calculate(input)
 	assert.Equal(t, "3", actual)
+
+	input = "10*-1"
+	actual, _ = calculate(input)
+	assert.Equal(t, "-10", actual)
+
+	input = "-3+10"
+	actual, _ = calculate(input)
+	assert.Equal(t, "7", actual)
+
+	input = "-(-4*-10)"
+	actual, _ = calculate(input)
+	assert.Equal(t, "-40", actual)
 }
 
 func TestGetResFromPolish(t *testing.T) {
+	t.Parallel()
+
 	input := []string{"14", "16", "+", "3", "-", "3", "3", "*", "/"}
 	actual, _ := getResFromPolish(input)
 	expected := "3"
@@ -50,6 +70,8 @@ func TestGetResFromPolish(t *testing.T) {
 }
 
 func TestTokenize(t *testing.T) {
+	t.Parallel()
+
 	input := "(14+16-3)/(3*3)"
 	actual, _ := tokenize(input)
 	expected := []string{"(", "14", "+", "16", "-", "3", ")", "/", "(", "3", "*", "3", ")"}
@@ -57,6 +79,8 @@ func TestTokenize(t *testing.T) {
 }
 
 func TestCalcForTwoNums(t *testing.T) {
+	t.Parallel()
+
 	num1 := "25"
 	num2 := "5"
 
@@ -82,6 +106,8 @@ func TestCalcForTwoNums(t *testing.T) {
 }
 
 func TestCorrectExpression(t *testing.T) {
+	t.Parallel()
+
 	input := "(14+16-3)/(3*3)"
 	expected := true
 	actual := correctExpression(input)
@@ -90,17 +116,5 @@ func TestCorrectExpression(t *testing.T) {
 	input = "(14+16-3)/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA(3*3)"
 	expected = false
 	actual = correctExpression(input)
-	assert.Equal(t, expected, actual)
-}
-
-func TestFixExpression(t *testing.T) {
-	input := "-1+2"
-	expected := "0-1+2"
-	actual := fixExpression(input)
-	assert.Equal(t, expected, actual)
-
-	input = "2+(-3+4)"
-	expected = "2+(0-3+4)"
-	actual = fixExpression(input)
 	assert.Equal(t, expected, actual)
 }
