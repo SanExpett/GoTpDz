@@ -1,15 +1,16 @@
-package stack
+package stack_test
 
 import (
 	"testing"
 
+	"github.com/SanExpett/TpGoDz/stack"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestStack(t *testing.T) { // тестим методы стека (успешные сценарии)
 	t.Parallel()
 
-	stack := Create()
+	stack := stack.Create()
 	assert.Equal(t, 0, stack.Len())
 
 	stack.Push("first")
@@ -35,8 +36,8 @@ func TestStack(t *testing.T) { // тестим методы стека (успе
 
 func TestStackErrors(t *testing.T) {
 	t.Parallel()
-	
-	stack := Create()
+
+	stack := stack.Create()
 
 	_, err := stack.Top() // нельзя топнуть из пустого стека
 	assert.NotNil(t, err)

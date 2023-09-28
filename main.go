@@ -7,9 +7,8 @@ import (
 )
 
 func main() {
-	err := calculate.Run()
-	if err != nil {
-		errorMsg := fmt.Sprintf("Произошла ошибка: %v", err)
+	if err := calculate.Run(); err != nil {
+		errorMsg := fmt.Errorf("an error has occurred: %w", err)
 		fmt.Println(errorMsg)
 	}
 }

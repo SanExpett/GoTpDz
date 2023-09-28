@@ -8,6 +8,9 @@ import (
 	"strconv"
 )
 
+var errParce = errors.New("error in parcing command line")
+var errCalc = errors.New("calculating error")
+
 func Run() error {
 	expression, err := parceCommandLine()
 	if err != nil {
@@ -26,11 +29,11 @@ func Run() error {
 
 func parceCommandLine() (string, error) { // вытаскиваем из строки выражение
 	if len(os.Args) > 2 {
-		return "", errors.New("There must be only one expression")
+		return "", errParce
 	}
 
 	if len(os.Args) == 1 {
-		return "", errors.New("No expression")
+		return "", errParce
 	}
 
 	expression := os.Args[1]
@@ -58,23 +61,30 @@ func calculate(expression string) (string, error) { // передаем стро
 }
 
 // передаем стрки с двумя числами и операцией, получаем резульат ее применения на числах.
-func calcForTwoNums(num1 string, num2 string, operator string) (string, error) { 
-	intNum1, _ := strconv.Atoi(num1)
-	intNum2, _ := strconv.Atoi(num2)
+func calcForTwoNums(num1 string, num2 string, operator string) (string, error) {
+	floatNum1, err := strconv.ParseFloat(num1, 64)
+	if err != nil {
+		return "", fmt.Errorf("failed convert str to num: %w", err)
+	}
+
+	floatNum2, err := strconv.ParseFloat(num2, 64)
+	if err != nil {
+		return "", fmt.Errorf("failed convert str to num: %w", err)
+	}
 
 	switch {
 	case operator == "+":
-		return strconv.Itoa(intNum1 + intNum2), nil
+		return strconv.FormatFloat(floatNum1+floatNum2, 'f', -1, 64), nil
 	case operator == "-":
-		return strconv.Itoa(intNum1 - intNum2), nil
+		return strconv.FormatFloat(floatNum1-floatNum2, 'f', -1, 64), nil
 	case operator == "*":
-		return strconv.Itoa(intNum1 * intNum2), nil
+		return strconv.FormatFloat(floatNum1*floatNum2, 'f', -1, 64), nil
 	case operator == "/":
-		if num2 == "0" {
-			return "0", errors.New("Zero division")
+		if floatNum2 == 0.0 {
+			return "0", errCalc
 		}
 
-		return strconv.Itoa(intNum1 / intNum2), nil
+		return strconv.FormatFloat(floatNum1/floatNum2, 'f', -1, 64), nil
 	default:
 		return "", nil
 	}
@@ -82,7 +92,7 @@ func calcForTwoNums(num1 string, num2 string, operator string) (string, error) {
 
 func tokenize(expression string) ([]string, error) { // из строки с выражением в слайс с числами и операторами
 	if !correctExpression(expression) {
-		return nil, errors.New("Only digits and signs")
+		return nil, errCalc
 	}
 
 	tokens := []string{}
@@ -90,7 +100,7 @@ func tokenize(expression string) ([]string, error) { // из строки с в�
 
 	for _, char := range expression {
 		switch {
-		case char >= '0' && char <= '9':
+		case char >= '0' && char <= '9' || char == '.':
 			token += string(char)
 		case char == '+' || char == '-' || char == '*' || char == '/' || char == '(' || char == ')':
 			if token != "" {
@@ -119,7 +129,7 @@ func tokenize(expression string) ([]string, error) { // из строки с в�
 }
 
 func correctExpression(expr string) bool { // проверяем что выражение состоит из цифр, скобок и пробелов
-	reg := regexp.MustCompile(`^[0-9()+\-*\/ ]+$`)
+	reg := regexp.MustCompile(`^[0-9()+\-*\/. ]+$`)
 
 	return reg.MatchString(expr)
 }

@@ -118,3 +118,22 @@ func TestCorrectExpression(t *testing.T) {
 	actual = correctExpression(input)
 	assert.Equal(t, expected, actual)
 }
+
+func TestIsNum(t *testing.T) {
+	t.Parallel()
+
+	input := "32.342"
+	expected := true
+	actual := isNum(input)
+	assert.Equal(t, expected, actual)
+
+	input = "32"
+	expected = true
+	actual = isNum(input)
+	assert.Equal(t, expected, actual)
+
+	input = "32aaaaaaaaaaaaaaa"
+	expected = false
+	actual = isNum(input)
+	assert.Equal(t, expected, actual)
+}
