@@ -12,7 +12,7 @@ func FromSliceToOutput(lines []string, outputFileName string) error {
 	} else {
 		err := fromSliceToFile(lines, outputFileName)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed outputing: %w", err)
 		} 
 	}
 	
@@ -24,7 +24,7 @@ func fromSliceToFile(lines []string, outputFileName string) error {
 	err := ioutil.WriteFile(outputFileName, []byte(joinedLines), 0644)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("failed outputing: %w", err)
 	}
 
 	return nil

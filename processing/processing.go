@@ -9,6 +9,8 @@ import (
 	"github.com/SanExpett/GoDz1P1/inout"
 )
 
+var errProcessing = errors.New("parcing failed")
+
 // инициализирует флаги.
 func initFlags(cFlag, dFlag, uFlag, iFlag *bool, fFlag, sFlag *int, ) {
 	flag.BoolVar(cFlag, "c", false, "Count before each string")
@@ -33,14 +35,14 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 	if fFlag != 0 {
 		err := functions.IgnoreNFields(&linesCopy, fFlag)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed execting: %w", err)
 		}
 	}
 
 	if sFlag != 0 {
 		err := functions.IgnoreNSymbols(&linesCopy, sFlag)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed execting: %w", err)
 		}
 	}
 
@@ -61,12 +63,13 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 		suitableLines = functions.UniqLines(linesCopy)
 	} else {
 		fmt.Println("Формат команды: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
-		return errors.New("Формат команды: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
+		
+		return errProcessing
 	}
 
 	err := functions.GetResult(lines, suitableLines)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed execting: %w", err)
 	}
 
 	return nil
@@ -89,17 +92,17 @@ func ParseCommandLine() error {
 
 	lines, err := inout.FromInputToSlice(inputFileName)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed parcing: %w", err)
 	}
 
 	err = executeCommands(cFlag, dFlag, uFlag, iFlag, fFlag, sFlag, &lines)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed parcing: %w", err)
 	}
 
 	err = inout.FromSliceToOutput(lines, outputFileName)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed parcing: %w", err)
 	}
 
 	return nil

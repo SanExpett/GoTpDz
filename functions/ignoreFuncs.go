@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var errIgnore = errors.New("selection funcs error")
+
 func IgnoreRegister(lines *[]string) {
 	for i := range *lines {
 		(*lines)[i] = strings.ToLower((*lines)[i])
@@ -15,7 +17,7 @@ func IgnoreRegister(lines *[]string) {
 
 func IgnoreNFields(lines *[]string, n int) error {
 	if n < 0 {
-		return errors.New("n must be >= 0")
+		return errIgnore
 	}
 	
 	for i := range *lines {
@@ -32,7 +34,7 @@ func IgnoreNFields(lines *[]string, n int) error {
 
 func IgnoreNSymbols(lines *[]string, n int) error {
 	if n < 0 {
-		return errors.New("n must be >= 0")
+		return errIgnore
 	}
 
 	for i := range *lines {

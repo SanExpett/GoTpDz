@@ -7,11 +7,13 @@ import (
 	"strconv"
 )
 
+var errSelect = errors.New("selection funcs error")
+
 // из слайса всех строк и слайса булов подходящих
 // вернуть слайс подходящих.
 func GetResult(lines *[]string, suitableLines []bool) error {
 	if len(*lines) != len(suitableLines) {
-		return errors.New("slices must have same len")
+		return errSelect
 	}
 	
 	var result []string
