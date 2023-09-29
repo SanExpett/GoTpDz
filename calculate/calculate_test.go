@@ -43,7 +43,7 @@ func TestCalculate(t *testing.T) {
 	assert.Equal(t, "-9", actual)
 }
 
-func TestCalulateErrors(t *testing.T){
+func TestCalulateErrors(t *testing.T) {
 	t.Parallel()
 
 	input := "(1+2)-aaaaaaaaaaaaaaaaaaaaaaaaaa3"

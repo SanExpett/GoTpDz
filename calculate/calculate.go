@@ -8,8 +8,10 @@ import (
 	"strconv"
 )
 
-var errParce = errors.New("error in parcing command line")
-var errCalc = errors.New("calculating error")
+var (
+	errParce = errors.New("error in parcing command line")
+	errCalc  = errors.New("calculating error")
+)
 
 func Run() error {
 	expression, err := parceCommandLine()
@@ -42,7 +44,7 @@ func parceCommandLine() (string, error) { // вытаскиваем из стр�
 }
 
 // передаем строчку с выражением, получаем итоговый ответ строкой.
-func Calculate(expression string) (string, error) { 
+func Calculate(expression string) (string, error) {
 	tokens, err := tokenize(expression)
 	if err != nil {
 		return "", err

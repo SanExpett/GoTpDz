@@ -34,6 +34,7 @@ func isNum(str string) bool { // проверяем что в строке чи�
 	return false
 }
 
+//nolint: funlen
 func toPolishNotation(tokens []string) ([]string, error) { // передаем слайс строк с выражением в стандартной записи, получаем слайс строк в польской нотации
 	stack := stack.Create()
 
@@ -93,7 +94,12 @@ func toPolishNotation(tokens []string) ([]string, error) { // передаем �
 
 			if isOperator { // любой другой оператор
 				// Пока оператор на вершине стека имеет >= приоритет, переносим его в результат
-				for top, err := stack.Top(); stack.Len() > 0 && top != "(" && operatorPriority <= operators[top]; top, err = stack.Top() {
+				top, err := stack.Top()
+				if err != nil {
+					return nil, fmt.Errorf("failed top from the oper stack by postfixing: %w", err)
+				}
+
+				for ; stack.Len() > 0 && top != "(" && operatorPriority <= operators[top]; top, err = stack.Top() {
 					if err != nil {
 						return nil, fmt.Errorf("failed top from the oper stack by postfixing: %w", err)
 					}
