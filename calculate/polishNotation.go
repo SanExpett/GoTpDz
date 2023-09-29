@@ -34,7 +34,8 @@ func isNum(str string) bool { // проверяем что в строке чи�
 	return false
 }
 
-//nolint: funlen
+// nolint: funlen
+// nolint: gci
 func toPolishNotation(tokens []string) ([]string, error) { // передаем слайс строк с выражением в стандартной записи, получаем слайс строк в польской нотации
 	stack := stack.Create()
 
