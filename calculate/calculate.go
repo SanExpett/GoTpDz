@@ -17,7 +17,7 @@ func Run() error {
 		return err
 	}
 
-	result, err := calculate(expression)
+	result, err := Calculate(expression)
 	if err != nil {
 		return err
 	}
@@ -41,13 +41,14 @@ func parceCommandLine() (string, error) { // вытаскиваем из стр�
 	return expression, nil
 }
 
-func calculate(expression string) (string, error) { // передаем строчку с выражением, получаем итоговый ответ строкой
+// передаем строчку с выражением, получаем итоговый ответ строкой.
+func Calculate(expression string) (string, error) { 
 	tokens, err := tokenize(expression)
 	if err != nil {
 		return "", err
 	}
 
-	inPol, err := ToPolishNotation(tokens)
+	inPol, err := toPolishNotation(tokens)
 	if err != nil {
 		return "", err
 	}

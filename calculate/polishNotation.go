@@ -34,7 +34,7 @@ func isNum(str string) bool { // проверяем что в строке чи�
 	return false
 }
 
-func ToPolishNotation(tokens []string) ([]string, error) { // передаем слайс строк с выражением в стандартной записи, получаем слайс строк в польской нотации
+func toPolishNotation(tokens []string) ([]string, error) { // передаем слайс строк с выражением в стандартной записи, получаем слайс строк в польской нотации
 	stack := stack.Create()
 
 	result := make([]string, 0)
@@ -47,7 +47,7 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 		"/": 2,
 	}
 
-	for i, token := range tokens {
+	for idx, token := range tokens {
 		switch token {
 		case "(":
 			stack.Push(token)
@@ -86,7 +86,7 @@ func ToPolishNotation(tokens []string) ([]string, error) { // передаем �
 			_, isOperator := operators[token]
 			operatorPriority := operators[token]
 
-			if token == "-" && (i == 0 || !isNum(tokens[i-1]) && tokens[i-1] != ")") { // если унарный минус
+			if token == "-" && (idx == 0 || !isNum(tokens[idx-1]) && tokens[idx-1] != ")") { // если унарный минус
 				result = append(result, "0")
 				operatorPriority = 3
 			}
