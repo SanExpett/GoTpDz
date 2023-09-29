@@ -21,13 +21,13 @@ func TestIgnoreNFields(t *testing.T) {
 	t.Parallel()
 
 	lines := []string{"line one aaaa", "second line", "b s a"}
-	functions.IgnoreNFields(&lines, 1)
+	_ = functions.IgnoreNFields(&lines, 1)
 
 	expetcted := []string{"one aaaa", "line", "s a"}
 	assert.Equal(t, lines, expetcted)
 
 	lines = []string{"line one aaaa", "second line", "b s a"}
-	functions.IgnoreNFields(&lines, 3)
+	_ = functions.IgnoreNFields(&lines, 3)
 
 	expetcted = []string{"", "", ""}
 	assert.Equal(t, lines, expetcted)
@@ -45,13 +45,13 @@ func TestIgnoreNSymbols(t *testing.T) {
 	t.Parallel()
 
 	lines := []string{"line one aaaa", "second line", "b s a"}
-	functions.IgnoreNSymbols(&lines, 3)
+	_ = functions.IgnoreNSymbols(&lines, 3)
 
 	expetcted := []string{"e one aaaa", "ond line", " a"}
 	assert.Equal(t, lines, expetcted)
 
 	lines = []string{"line one aaaa", "second line", "b s a"}
-	functions.IgnoreNSymbols(&lines, 20)
+	_ = functions.IgnoreNSymbols(&lines, 20)
 
 	expetcted = []string{"", "", ""}
 	assert.Equal(t, lines, expetcted)
