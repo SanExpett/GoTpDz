@@ -19,7 +19,7 @@ func IgnoreNFields(lines *[]string, n int) error {
 	if n < 0 {
 		return errIgnore
 	}
-	
+
 	for i := range *lines {
 		words := strings.Split((*lines)[i], " ")
 		if n > len(words) {
@@ -28,7 +28,7 @@ func IgnoreNFields(lines *[]string, n int) error {
 			(*lines)[i] = strings.Join(words[n:], " ")
 		}
 	}
-	
+
 	return nil
 }
 
@@ -38,12 +38,12 @@ func IgnoreNSymbols(lines *[]string, n int) error {
 	}
 
 	for i := range *lines {
-		if n > len( (*lines)[i] ) {
+		if n > len((*lines)[i]) {
 			(*lines)[i] = ""
 		} else {
 			(*lines)[i] = (*lines)[i][n:]
 		}
 	}
-	
+
 	return nil
 }

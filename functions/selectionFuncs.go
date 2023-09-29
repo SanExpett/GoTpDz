@@ -15,7 +15,7 @@ func GetResult(lines *[]string, suitableLines []bool) error {
 	if len(*lines) != len(suitableLines) {
 		return errSelect
 	}
-	
+
 	var result []string
 
 	for i, val := range suitableLines {
@@ -23,10 +23,10 @@ func GetResult(lines *[]string, suitableLines []bool) error {
 			result = append(result, (*lines)[i])
 		}
 	}
-	
+
 	*lines = result
 
-	return nil 
+	return nil
 }
 
 // UniqLines возвращает слайс булов, где true обозначает уникальные строки в данном слайсе строк.
@@ -49,9 +49,9 @@ func UniqLines(lines []string) []bool { // дефолтное поведение
 	return suitableLines
 }
 
-// CountOfLines возвращает слайс булов, где true обозначает строки, для 
+// CountOfLines возвращает слайс булов, где true обозначает строки, для
 // которых указано количество в соответствующем элементе общего слайса строк.
-// lines - строки после применения ignoreFuncs, 
+// lines - строки после применения ignoreFuncs,
 // linesWithCounts - указатель на ориг строки, к ним прилепим кол-во.
 func CountOfLines(lines []string, linesWithCounts *[]string) []bool { // -c
 	if len(lines) == 0 {
@@ -64,7 +64,7 @@ func CountOfLines(lines []string, linesWithCounts *[]string) []bool { // -c
 	suitableLines[0] = true
 
 	for i := 1; i < len(lines); i++ {
-		if lines[i] == lines[currLineIdx] { 
+		if lines[i] == lines[currLineIdx] {
 			count++
 
 			continue
@@ -75,6 +75,7 @@ func CountOfLines(lines []string, linesWithCounts *[]string) []bool { // -c
 		currLineIdx = i
 		count = 1
 	}
+
 	(*linesWithCounts)[currLineIdx] = strconv.Itoa(count) + " " + (*linesWithCounts)[currLineIdx]
 
 	return suitableLines
@@ -128,6 +129,6 @@ func NonRepeatingLines(lines []string) []bool { // -u
 	} else if len(lines) == 1 {
 		suitableLines[0] = true
 	}
-	
+
 	return suitableLines
 }

@@ -21,7 +21,7 @@ var EXAMPLE = []string{
 
 func TestUniqLines(t *testing.T) {
 	t.Parallel()
-	
+
 	lines := EXAMPLE
 	result := functions.UniqLines(lines)
 	expected := []bool{true, false, false, true, true, false, true, true, false}
@@ -35,13 +35,13 @@ func TestCountOfLines(t *testing.T) {
 	lines := EXAMPLE // предполагается, что это строки которые возможно были поломаны ignore флагами
 
 	linesWithCounts := make([]string, len(lines))
-    copy(linesWithCounts, lines)
+	copy(linesWithCounts, lines)
 
 	result := functions.CountOfLines(lines, &linesWithCounts)
 	expectedBools := []bool{true, false, false, true, true, false, true, true, false}
 	assert.Equal(t, result, expectedBools)
-	
-	// тестим, что функция правильно считает количество повторяющихся строк 
+
+	// тестим, что функция правильно считает количество повторяющихся строк
 	expectedLines := []string{
 		"3 I love music.",
 		"1 ",
@@ -57,11 +57,11 @@ func TestCountOfLines(t *testing.T) {
 			resultLines = append(resultLines, linesWithCounts[i])
 		}
 	}
-	
+
 	assert.Equal(t, expectedLines, resultLines)
 }
 
-func TestRepeatingLines(t *testing.T) { 
+func TestRepeatingLines(t *testing.T) {
 	t.Parallel()
 
 	lines := EXAMPLE
@@ -85,7 +85,7 @@ func TestGetResultRignt(t *testing.T) {
 	lines := EXAMPLE
 	suitableLines := []bool{false, false, false, true, false, false, true, false, false}
 	_ = functions.GetResult(&lines, suitableLines)
-	
+
 	expected := []string{"", "Thanks."}
 	assert.Equal(t, expected, lines)
 }
