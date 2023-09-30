@@ -88,21 +88,16 @@ func toPolishNotation(tokens []string) ([]string, error) { // передаем �
 		default:
 			// Если текущий токен - оператор
 			_, isOperator := operators[token]
-			operatorPriority := operators[token]
+			opPrior := operators[token]
 
 			if token == "-" && (idx == 0 || !isNum(tokens[idx-1]) && tokens[idx-1] != ")") { // если унарный минус
 				result = append(result, "0")
-				operatorPriority = 3
+				opPrior = 3
 			}
 
 			if isOperator { // любой другой оператор
 				// Пока оператор на вершине стека имеет >= приоритет, переносим его в результат
-				top, err := stack.Top()
-				if err != nil {
-					return nil, fmt.Errorf(errTemplate, err)
-				}
-
-				for ; stack.Len() > 0 && top != "(" && operatorPriority <= operators[top]; top, err = stack.Top() {
+				for top, err := stack.Top(); stack.Len() > 0 && top != "(" && opPrior <= operators[top]; top, err = stack.Top() {
 					if err != nil {
 						return nil, fmt.Errorf(errTemplate, err)
 					}
