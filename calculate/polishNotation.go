@@ -10,6 +10,8 @@ import (
 
 var errNotation = errors.New("notation conversion error")
 
+const errTemplate = "%w"
+
 func isInt(str string) bool {
 	if _, err := strconv.Atoi(str); err == nil {
 		return true
@@ -57,21 +59,21 @@ func toPolishNotation(tokens []string) ([]string, error) { // передаем �
 			// Пока не встречаем открывающую скобку, переносим операторы из стека в результат
 			for top, err := stack.Top(); stack.Len() > 0 && top != "("; top, err = stack.Top() {
 				if err != nil {
-					return nil, fmt.Errorf("failed top from the oper stack by postfixing: %w", err)
+					return nil, fmt.Errorf(errTemplate, err)
 				}
 
 				result = append(result, top)
 
 				_, err = stack.Pop()
 				if err != nil {
-					return nil, fmt.Errorf("failed pop from the oper stack by postfixing: %w", err)
+					return nil, fmt.Errorf(errTemplate, err)
 				}
 			}
 
 			// Если не удалось найти открывающую скобку, возвращаем ошибку
 			top, err := stack.Top()
 			if err != nil {
-				return nil, fmt.Errorf("failed top from the oper stack by postfixing: %w", err)
+				return nil, fmt.Errorf(errTemplate, err)
 			}
 
 			if stack.Len() == 0 || top != "(" {
@@ -81,7 +83,7 @@ func toPolishNotation(tokens []string) ([]string, error) { // передаем �
 			// Удаляем открывающую скобку из стека ?????????????
 			_, err = stack.Pop()
 			if err != nil {
-				return nil, fmt.Errorf("failed pop from the oper stack by postfixing: %w", err)
+				return nil, fmt.Errorf(errTemplate, err)
 			}
 		default:
 			// Если текущий токен - оператор
@@ -97,19 +99,19 @@ func toPolishNotation(tokens []string) ([]string, error) { // передаем �
 				// Пока оператор на вершине стека имеет >= приоритет, переносим его в результат
 				top, err := stack.Top()
 				if err != nil {
-					return nil, fmt.Errorf("failed top from the oper stack by postfixing: %w", err)
+					return nil, fmt.Errorf(errTemplate, err)
 				}
 
 				for ; stack.Len() > 0 && top != "(" && operatorPriority <= operators[top]; top, err = stack.Top() {
 					if err != nil {
-						return nil, fmt.Errorf("failed top from the oper stack by postfixing: %w", err)
+						return nil, fmt.Errorf(errTemplate, err)
 					}
 
 					result = append(result, top)
 
 					_, err = stack.Pop()
 					if err != nil {
-						return nil, fmt.Errorf("failed pop from the oper stack by postfixing: %w", err)
+						return nil, fmt.Errorf(errTemplate, err)
 					}
 				}
 
@@ -130,7 +132,7 @@ func toPolishNotation(tokens []string) ([]string, error) { // передаем �
 		// Если на вершине стека оказывается открывающая скобка => выражение не сбалансировано
 		top, err := stack.Top()
 		if err != nil {
-			return nil, fmt.Errorf("failed top from the oper stack by postfixing: %w", err)
+			return nil, fmt.Errorf(errTemplate, err)
 		}
 
 		if top == "(" {
@@ -141,7 +143,7 @@ func toPolishNotation(tokens []string) ([]string, error) { // передаем �
 
 		_, err = stack.Pop()
 		if err != nil {
-			return nil, fmt.Errorf("failed pop from the oper stack by postfixing: %w", err)
+			return nil, fmt.Errorf(errTemplate, err)
 		}
 	}
 
@@ -160,12 +162,12 @@ func getResFromPolish(tokens []string) (string, error) {
 		if !isNum(token) {
 			num2, err := stack.Pop()
 			if err != nil {
-				return "", fmt.Errorf("failed pop from the oper stack by getting res from pol: %w", err)
+				return "", fmt.Errorf(errTemplate, err)
 			}
 
 			num1, err := stack.Pop()
 			if err != nil {
-				return "", fmt.Errorf("failed pop from the oper stack by getting res from pol: %w", err)
+				return "", fmt.Errorf(errTemplate, err)
 			}
 
 			res, err := calcForTwoNums(num1, num2, token)
@@ -179,7 +181,7 @@ func getResFromPolish(tokens []string) (string, error) {
 
 	result, err := stack.Pop()
 	if err != nil {
-		return "", fmt.Errorf("failed pop from the stack by getting res from pol: %w", err)
+		return "", fmt.Errorf(errTemplate, err)
 	}
 
 	return result, nil

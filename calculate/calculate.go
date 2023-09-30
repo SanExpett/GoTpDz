@@ -67,12 +67,12 @@ func Calculate(expression string) (string, error) {
 func calcForTwoNums(num1 string, num2 string, operator string) (string, error) {
 	floatNum1, err := strconv.ParseFloat(num1, 64)
 	if err != nil {
-		return "", fmt.Errorf("failed convert str to num: %w", err)
+		return "", fmt.Errorf(errTemplate, err)
 	}
 
 	floatNum2, err := strconv.ParseFloat(num2, 64)
 	if err != nil {
-		return "", fmt.Errorf("failed convert str to num: %w", err)
+		return "", fmt.Errorf(errTemplate, err)
 	}
 
 	switch {
