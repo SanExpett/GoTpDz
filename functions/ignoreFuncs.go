@@ -9,39 +9,39 @@ import (
 
 var errIgnore = errors.New("selection funcs error")
 
-func IgnoreRegister(lines *[]string) {
-	for i := range *lines {
-		(*lines)[i] = strings.ToLower((*lines)[i])
+func IgnoreRegister(lines []string) {
+	for i := range lines {
+		lines[i] = strings.ToLower(lines[i])
 	}
 }
 
-func IgnoreNFields(lines *[]string, n int) error {
+func IgnoreNFields(lines []string, n int) error {
 	if n < 0 {
 		return errIgnore
 	}
 
-	for i := range *lines {
-		words := strings.Split((*lines)[i], " ")
+	for i := range lines {
+		words := strings.Split(lines[i], " ")
 		if n > len(words) {
-			(*lines)[i] = ""
+			lines[i] = ""
 		} else {
-			(*lines)[i] = strings.Join(words[n:], " ")
+			lines[i] = strings.Join(words[n:], " ")
 		}
 	}
 
 	return nil
 }
 
-func IgnoreNSymbols(lines *[]string, n int) error {
+func IgnoreNSymbols(lines []string, n int) error {
 	if n < 0 {
 		return errIgnore
 	}
 
-	for i := range *lines {
-		if n > len((*lines)[i]) {
-			(*lines)[i] = ""
+	for i := range lines {
+		if n > len((lines)[i]) {
+			lines[i] = ""
 		} else {
-			(*lines)[i] = (*lines)[i][n:]
+			lines[i] = lines[i][n:]
 		}
 	}
 

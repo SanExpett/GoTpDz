@@ -29,18 +29,18 @@ func executeCommands(cFlag, dFlag, uFlag, iFlag bool, fFlag, sFlag int, lines *[
 	suitableLines := make([]bool, len(linesCopy))
 	// флаги, которые говорят игнорировать регистр/ n слов / n символов (ломаем ими linesCopy)
 	if iFlag {
-		functions.IgnoreRegister(&linesCopy)
+		functions.IgnoreRegister(linesCopy)
 	}
 
 	if fFlag != 0 {
-		err := functions.IgnoreNFields(&linesCopy, fFlag)
+		err := functions.IgnoreNFields(linesCopy, fFlag)
 		if err != nil {
 			return fmt.Errorf("failed execting: %w", err)
 		}
 	}
 
 	if sFlag != 0 {
-		err := functions.IgnoreNSymbols(&linesCopy, sFlag)
+		err := functions.IgnoreNSymbols(linesCopy, sFlag)
 		if err != nil {
 			return fmt.Errorf("failed execting: %w", err)
 		}
