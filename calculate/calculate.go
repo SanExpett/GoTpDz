@@ -3,45 +3,12 @@ package calculate
 import (
 	"errors"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
 )
 
-var (
-	errParce = errors.New("error in parcing command line")
-	errCalc  = errors.New("calculating error")
-)
 
-func Run() error {
-	expression, err := parceCommandLine()
-	if err != nil {
-		return err
-	}
-
-	result, err := Calculate(expression)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(result)
-
-	return nil
-}
-
-func parceCommandLine() (string, error) { // вытаскиваем из строки выражение
-	if len(os.Args) > 2 {
-		return "", errParce
-	}
-
-	if len(os.Args) == 1 {
-		return "", errParce
-	}
-
-	expression := os.Args[1]
-
-	return expression, nil
-}
+var errCalc  = errors.New("calculating error")
 
 // передаем строчку с выражением, получаем итоговый ответ строкой.
 func Calculate(expression string) (string, error) {

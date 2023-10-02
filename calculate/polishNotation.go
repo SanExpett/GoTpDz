@@ -13,19 +13,15 @@ var errNotation = errors.New("notation conversion error")
 const errTemplate = "%w"
 
 func isInt(str string) bool {
-	if _, err := strconv.Atoi(str); err == nil {
-		return true
-	}
-
-	return false
+	_, err := strconv.Atoi(str)
+	
+	return err == nil
 }
 
 func isFloat(str string) bool {
-	if _, err := strconv.ParseFloat(str, 32); err == nil {
-		return true
-	}
+	_, err := strconv.ParseFloat(str, 32)
 
-	return false
+	return err == nil
 }
 
 func isNum(str string) bool { // проверяем что в строке число
