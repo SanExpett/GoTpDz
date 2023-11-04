@@ -38,12 +38,6 @@ func SelectUsers(in, out chan interface{}) {
 	for email := range in {
 		emailStr := email.(string)
 
-		//mu.RLock()
-		//if processedEmails[emailStr] || processedEmails[usersAliases[emailStr]] {
-		//	continue
-		//}
-		//mu.RUnlock()
-
 		wg.Add(1)
 		go func(emailStr string) {
 			defer wg.Done()
