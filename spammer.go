@@ -31,18 +31,18 @@ func RunPipeline(cmds ...cmd) {
 func SelectUsers(in, out chan interface{}) {
 	// 	in - string
 	// 	out - User
-	processedEmails := make(map[string]bool)
+	processedEmails := make(map[uint64]bool)
 	wg := sync.WaitGroup{}
 	mu := sync.RWMutex{}
 
 	for email := range in {
 		emailStr := email.(string)
 
-		mu.RLock()
-		if processedEmails[emailStr] || processedEmails[usersAliases[emailStr]] {
-			continue
-		}
-		mu.RUnlock()
+		//mu.RLock()
+		//if processedEmails[emailStr] || processedEmails[usersAliases[emailStr]] {
+		//	continue
+		//}
+		//mu.RUnlock()
 
 		wg.Add(1)
 		go func(emailStr string) {
@@ -51,9 +51,8 @@ func SelectUsers(in, out chan interface{}) {
 			user := GetUser(emailStr)
 
 			mu.Lock()
-			if !processedEmails[emailStr] && !processedEmails[usersAliases[emailStr]] {
-				processedEmails[emailStr] = true
-				processedEmails[usersAliases[emailStr]] = true
+			if !processedEmails[user.ID] {
+				processedEmails[user.ID] = true
 
 				out <- user
 			}
@@ -160,7 +159,7 @@ func CombineResults(in, out chan interface{}) {
 		}
 
 		if msgDataSlice[i].HasSpam == msgDataSlice[j].HasSpam {
-			return msgDataSlice[i].ID > msgDataSlice[j].ID
+			return msgDataSlice[i].ID < msgDataSlice[j].ID
 		}
 
 		return false
