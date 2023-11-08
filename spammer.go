@@ -36,7 +36,10 @@ func SelectUsers(in, out chan interface{}) {
 	mu := sync.RWMutex{}
 
 	for email := range in {
-		emailStr := email.(string)
+		emailStrConverted, ok := email.(string)
+		if !ok {
+			continue
+		}
 
 		wg.Add(1)
 		go func(emailStr string) {
@@ -51,7 +54,7 @@ func SelectUsers(in, out chan interface{}) {
 				out <- user
 			}
 			mu.Unlock()
-		}(emailStr)
+		}(emailStrConverted)
 	}
 
 	wg.Wait()
@@ -80,7 +83,9 @@ func SelectMessages(in, out chan interface{}) {
 	}
 
 	for user := range in {
-		batch = append(batch, user.(User))
+		if userConverted, ok := user.(User); ok {
+			batch = append(batch, userConverted)
+		}
 
 		if len(batch) == batchSize {
 			wg.Add(1)
@@ -111,7 +116,12 @@ func CheckSpam(in, out chan interface{}) {
 	concurrency := make(chan struct{}, maxRequestCount)
 
 	for message := range in {
-		msgID := message.(MsgID)
+		msgIDConverted, ok := message.(MsgID)
+		if !ok {
+			continue
+		}
+
+		//msgID := message.(MsgID)
 
 		concurrency <- struct{}{}
 
@@ -132,7 +142,7 @@ func CheckSpam(in, out chan interface{}) {
 			msgData := MsgData{ID: msgID, HasSpam: isSpam}
 
 			out <- msgData
-		}(msgID)
+		}(msgIDConverted)
 	}
 
 	wg.Wait()
@@ -144,7 +154,9 @@ func CombineResults(in, out chan interface{}) {
 	var msgDataSlice []MsgData
 
 	for msgData := range in {
-		msgDataSlice = append(msgDataSlice, msgData.(MsgData))
+		if msgDataConverted, ok := msgData.(MsgData); ok {
+			msgDataSlice = append(msgDataSlice, msgDataConverted)
+		}
 	}
 
 	sort.Slice(msgDataSlice, func(i, j int) bool {
